@@ -1,0 +1,31 @@
+
+name: "Code Scan - CodeQL"
+on: [push]
+jobs:
+  CodeScan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        # Override language selection by uncommenting this and choosing your languages
+        with:
+          languages: python
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+      - name: Upload the result
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Upload scan result
+        run: |
+            curl -sL -O https://raw.githubusercontent.com/muralidkt/defectdojo-client/main/test/defectdojo_apiv2.py
+            curl -sL -O https://raw.githubusercontent.com/muralidkt/defectdojo-client/main/test/defectdojo.py
+            pip install requests
+            python3 defectdojo.py --host ${{secrets.dd_host}} --api_token ${{secrets.DD_API_TOKEN}} --engagement ${{secrets.DD_ENGAGEMENT}} --user ${{secrets.DD_USER}} --product_name ${{secrets.DD_PRODUCT_NAME}} --file /home/runner/work/flask-docker-helloworld/results/python.sarif --scanner "SARIF"
+   
+      
