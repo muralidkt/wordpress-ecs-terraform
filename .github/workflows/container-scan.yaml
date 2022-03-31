@@ -7,15 +7,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: Build an image from Dockerfile
-        run: |
-          docker build -t hello-world:${{ github.sha }} .
+    
       
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'hello-world:${{ github.sha }}'
+          image-ref: 'wordpress'
           format: 'json'
           output: 'report.json'
           

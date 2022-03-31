@@ -1,2 +1,5 @@
-# wordpress-ecs-terraform
-This repository is used used to deploy a wordpress instance into AWS ECS using Terraform
+# Fargate with Terraform
+
+Example repository to deploy an ECS cluster hosting a web application.
+
+This is not completed, yet.
